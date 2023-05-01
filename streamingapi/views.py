@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
+@login_required
 @require_GET
 def obtener_aleatoria(request, tipo):
     if tipo == 'pelicula':
@@ -20,7 +21,7 @@ def obtener_aleatoria(request, tipo):
         'puntaje': objeto.puntaje,
     }
     return JsonResponse(data)
-
+@login_required
 @require_GET
 def obtener_todas(request, tipo, orden):
     if tipo == 'pelicula':
@@ -49,7 +50,7 @@ def obtener_todas(request, tipo, orden):
     } for obj in objetos]
     return JsonResponse(data, safe=False)
 
-
+@login_required
 @require_GET
 def filtrar(request, tipo):
     if tipo == 'pelicula':
@@ -75,7 +76,9 @@ def filtrar(request, tipo):
         'puntaje': obj.puntaje,
     } for obj in objetos]
     return JsonResponse(data, safe=False)
-require_POST
+
+@login_required
+@require_POST
 def marcar_vista(request, tipo, id):
     if tipo == 'pelicula':
         objeto = Pelicula.objects.get(id=id)
@@ -96,7 +99,8 @@ def marcar_vista(request, tipo, id):
         'vistas_actuales': vistas_actuales
     }
     return JsonResponse(data)
-require_POST
+@login_required
+@require_POST
 def puntuar(request, tipo, id, puntuacion=None):
     if tipo == 'pelicula':
         objeto = Pelicula.objects.get(pk=id)

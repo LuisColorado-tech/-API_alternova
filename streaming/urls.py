@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from streamingapi import views
 from django.contrib.auth.views import LoginView
+from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('obtener_aleatoria/<str:tipo>/', views.obtener_aleatoria, name='obtener_aleatoria'),
     path('obtener_todas/<str:tipo>/<str:orden>/', views.obtener_todas, name='obtener_todas'),
